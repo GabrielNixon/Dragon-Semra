@@ -1,0 +1,35 @@
+# Example configuration for ingesting OWL ontologies.
+
+sources:
+  - path: data/mp.owl
+    format: owl
+    parameters:
+      artifact_type: phenotype_class
+      namespace_predicates:
+        - http://www.geneontology.org/formats/oboInOwl#hasOBONamespace
+      relationship_predicates:
+        - http://www.w3.org/2000/01/rdf-schema#subClassOf
+  - path: data/hp.owl
+    format: owl
+    parameters:
+      artifact_type: phenotype_class
+      namespace_predicates:
+        - http://www.geneontology.org/formats/oboInOwl#hasOBONamespace
+      relationship_predicates:
+        - http://www.w3.org/2000/01/rdf-schema#subClassOf
+
+synonyms:
+  similarity_threshold: 0.65
+  llm:
+    provider: openai
+    model: gpt-4o-mini
+    max_synonyms: 5
+    context_fields:
+      - namespace
+
+acronyms:
+  lexicon: {}
+
+export:
+  directory: artifacts
+  format: json
