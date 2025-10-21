@@ -1,0 +1,4 @@
+id,type,name,description,category
+A1,Gene,Alpha Kinase 1,A protein kinase,Gene Family
+A2,Gene,Beta Kinase 2,,Gene Family
+A3,Disease,Cardiac Arrhythmia,Irregular heartbeat,Disease Class
