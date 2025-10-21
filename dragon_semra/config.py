@@ -20,20 +20,6 @@ class SourceConfig:
     type_field: str = "type"
     name_field: str = "name"
     description_field: Optional[str] = None
-    parameters: Dict[str, object] = field(default_factory=dict)
-
-
-@dataclass
-class LLMConfig:
-    """Configuration for optional LLM-backed synonym generation."""
-
-    provider: str
-    model: str
-    max_synonyms: int = 5
-    prompt_template: Optional[str] = None
-    system_prompt: Optional[str] = None
-    context_fields: List[str] = field(default_factory=list)
-    enabled: bool = True
 
 
 @dataclass
@@ -42,7 +28,6 @@ class SynonymConfig:
 
     lexicon: Dict[str, Iterable[str]] = field(default_factory=dict)
     similarity_threshold: float = 0.75
-    llm: Optional[LLMConfig] = None
 
 
 @dataclass
@@ -79,28 +64,13 @@ def _parse_source_config(raw: Dict) -> SourceConfig:
         type_field=raw.get("type_field", "type"),
         name_field=raw.get("name_field", "name"),
         description_field=raw.get("description_field"),
-        parameters=raw.get("parameters", {}),
     )
 
 
 def _parse_synonym_config(raw: Dict) -> SynonymConfig:
-    llm_config = raw.get("llm")
     return SynonymConfig(
         lexicon={k: tuple(v) for k, v in raw.get("lexicon", {}).items()},
         similarity_threshold=float(raw.get("similarity_threshold", 0.75)),
-        llm=_parse_llm_config(llm_config) if llm_config else None,
-    )
-
-
-def _parse_llm_config(raw: Dict) -> LLMConfig:
-    return LLMConfig(
-        provider=raw["provider"],
-        model=raw["model"],
-        max_synonyms=int(raw.get("max_synonyms", 5)),
-        prompt_template=raw.get("prompt_template"),
-        system_prompt=raw.get("system_prompt"),
-        context_fields=list(raw.get("context_fields", [])),
-        enabled=bool(raw.get("enabled", True)),
     )
 
 
@@ -134,7 +104,6 @@ def load_config(path: Path | str) -> PipelineConfig:
 __all__ = [
     "SourceConfig",
     "SynonymConfig",
-    "LLMConfig",
     "AcronymConfig",
     "ExportConfig",
     "PipelineConfig",

@@ -1,12 +1,6 @@
 """Enrichment stage helpers."""
 
-from .acronyms import AcronymEnricher
-from .llm import LLMConfigurationError, LLMSynonymClient
 from .synonyms import SynonymEnricher
+from .acronyms import AcronymEnricher
 
-__all__ = [
-    "AcronymEnricher",
-    "SynonymEnricher",
-    "LLMSynonymClient",
-    "LLMConfigurationError",
-]
+__all__ = ["SynonymEnricher", "AcronymEnricher"]
